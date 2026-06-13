@@ -1,5 +1,6 @@
 package dev.elder.ms_email.consumer;
 
+import dev.elder.ms_email.dto.PedidoCreatedEvent;
 import dev.elder.ms_email.dto.UserCreatedEvent;
 import dev.elder.ms_email.service.EmailService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -28,5 +29,10 @@ public class UserCreatedConsumer {
                 String.valueOf(event.userId()),
                 event.email()
         );
+    }
+
+    @RabbitListener(queues = "pedido.email.queue")
+    public void consumePedidoCreatedQueue(PedidoCreatedEvent event) {
+        emailService.sendPedidoCreated(event);
     }
 }
